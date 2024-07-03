@@ -1,0 +1,195 @@
+;; black keyboard
+
+(defcfg
+  ;; For Linux
+  input  (device-file "/dev/input/by-id/usb-Compx_2.4G_Wireless_Receiver-event-kbd")
+  output (uinput-sink "My KMonad output")
+
+  ;; Comment this if you want unhandled events not to be emitted
+  fallthrough true
+
+  ;; Set this to false to disable any command-execution in KMonad
+  allow-cmd true
+)
+
+(defsrc
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  prnt pause del
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc       home
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \          end
+  caps a    s    d    f    g    h    j    k    l    ;    '         ret        pgup
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft           up    pgdn
+  lctl lmet lalt           spc                ralt  fn   rctl      left down  rght
+)
+
+(defalias
+  cesc (tap-next esc lctl)
+)
+
+(deflayer base
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  prnt pause del
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc       home
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \          end
+  @cesc a    s    d    f    g    h    j    k    l    ;    '         ret        pgup
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft           up    pgdn
+  lctl @met_toggle @cmd           spc                @rralt  fn   rctl      left down  rght
+)
+
+(defalias
+    ;; activate the cmd layer
+    cmd (layer-toggle cmd)
+    rralt (layer-toggle rralt)
+
+    cmdsft_toggle (layer-toggle cmdsft)
+    cmdctl_toggle (layer-toggle cmdctl)
+    cmdmet_toggle (layer-toggle cmdmet)
+    cmdralt_toggle (layer-toggle cmdralt)
+
+    chrome (cmd-button "/home/jianzhu/playground/config/script/chrome.sh")
+    code (cmd-button "/home/jianzhu/playground/config/script/code.sh")
+    drawio (cmd-button "/home/jianzhu/playground/config/script/drawio.sh")
+)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;cmd;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(deflayer cmd
+  _    A-f1    A-f2    A-f3   A-f4   A-f5   A-f6   A-f7   A-f8   A-f9   A-f10  A-f11  A-f12   A-prnt A-pause A-del
+  A-grv  C-1    C-2   C-3   C-4   C-5   C-6   C-7   C-8   C-9   C-0   C--   C-=   C-bspc     A-home 
+  A-tab  C-q    C-w    C-e    C-r    C-t    A-y    A-u    A-i    A-o    C-p    C-[    C-]    C-\     A-end
+  A-caps C-a    C-s    C-d    C-f    C-g    A-h    A-j    A-k    A-l    A-;    A-'         C-ret        A-pgup
+  @cmdsft_toggle C-z    C-x    C-c    C-v    C-b    C-n    C-m    C-,    A-.    C-/    @cmdsft_toggle           C-home    A-pgdn 
+  @cmdctl_toggle @cmdmet_toggle _           A-spc                @cmdralt_toggle  fn   @cmdctl_toggle    home      C-end    end
+)
+
+;; change the following command to
+;; command + shift + e
+;; command + shift + d
+;; command + shift + f
+;; command + shift + z
+;; command + shift + x
+;; command + shift + c
+;; command + shift + v
+;; Ctrl + Tab -> command + shift + ]
+;; Ctrl + Shift + Tab -> command + shift + [
+(deflayer cmdsft
+  A-S-esc  A-S-f1   A-S-f2   A-S-f3   A-S-f4   A-S-f5   A-S-f6   A-S-f7   A-S-f8   A-S-f9   A-S-f10  A-S-f11  A-S-f12  A-S-prnt A-S-pause A-S-del
+  A-S-grv  A-S-1    A-S-2    A-S-3    A-S-4    A-S-5    A-S-6    A-S-7    A-S-8    A-S-9    A-S-0    A-S--    A-S-=    A-S-bspc       A-S-home
+  A-S-tab  C-S-tab  C-tab    C-S-e    A-S-r    C-S-t    A-S-y    A-S-u    A-S-i    A-S-o    A-S-p    C-S-tab    C-tab    A-S-\          A-S-end
+  A-S-caps A-S-a    A-S-s    C-S-d    C-S-f    A-S-g    A-S-h    A-S-j    A-S-k    A-S-l    A-S-;    A-S-'         C-S-ret        A-S-pgup
+  A-S-lsft C-S-z    C-S-x    C-S-c    C-S-v    A-S-b    C-S-n    A-S-m    A-S-,    A-S-.    A-S-/    A-S-rsft           C-S-home    A-S-pgdn
+  A-S-lctl A-S-lmet A-S-lalt           A-S-spc                A-S-ralt  A-S-fn   A-S-rctl                      S-home      C-S-end    S-end
+)
+
+;; change nothing for now
+(deflayer cmdctl
+  A-C-esc  A-C-f1   A-C-f2   A-C-f3   A-C-f4   A-C-f5   A-C-f6   A-C-f7   A-C-f8   A-C-f9   A-C-f10  A-C-f11  A-C-f12  A-C-prnt A-C-pause A-C-del
+  A-C-grv  A-C-1    A-C-2    A-C-3    A-C-4    A-C-5    A-C-6    A-C-7    A-C-8    A-C-9    A-C-0    A-C--    A-C-=    A-C-bspc       A-C-home
+  A-C-tab  A-C-q    A-C-w    A-C-e    A-C-r    A-C-t    A-C-y    A-C-u    A-C-i    A-C-o    A-C-p    A-C-[    A-C-]    A-C-\          A-C-end
+  A-C-caps A-C-a    A-C-s    A-C-d    A-C-f    A-C-g    A-C-h    A-C-j    A-C-k    A-C-l    A-C-;    A-C-'         A-C-ret        A-C-pgup
+  A-C-lsft A-C-z    A-C-x    A-C-c    A-C-v    A-C-b    A-C-n    A-C-m    A-C-,    A-C-.    A-C-/    A-C-rsft           A-C-up    A-C-pgdn
+  A-C-lctl A-C-lmet A-C-lalt           A-C-spc                A-C-ralt  A-C-fn   A-C-rctl      A-C-left A-C-down  A-C-rght
+)
+
+(deflayer cmdmet
+  A-M-esc  A-M-f1   A-M-f2   A-M-f3   A-M-f4   A-M-f5   A-M-f6   A-M-f7   A-M-f8   A-M-f9   A-M-f10  A-M-f11  A-M-f12  A-M-prnt A-M-pause A-M-del
+  A-M-grv  A-M-1    A-M-2    A-M-3    A-M-4    A-M-5    A-M-6    A-M-7    A-M-8    A-M-9    A-M-0    A-M--    A-M-=    A-M-bspc       A-M-home
+  A-M-tab  A-M-q    A-M-w    A-M-e    A-M-r    A-M-t    A-M-y    A-M-u    A-M-i    A-M-o    A-M-p    A-M-[    A-M-]    A-M-\    A-M-end
+  A-M-caps A-M-a    A-M-s    A-M-d    A-M-f    A-M-g    A-M-h    A-M-j    A-M-k    A-M-l    A-M-;    A-M-'         A-M-ret        A-M-pgup
+  A-M-lsft A-M-z    A-M-x    A-M-c    A-M-v    A-M-b    A-M-n    A-M-m    A-M-,    A-M-.    A-M-/    A-M-rsft           A-M-up    A-M-pgdn
+  A-M-lctl A-M-lmet A-M-lalt           A-M-spc                A-M-ralt  A-M-fn   A-M-rctl      A-M-left A-M-down  A-M-rght
+)
+
+(deflayer cmdralt
+  A-RA-esc  A-RA-f1   A-RA-f2   A-RA-f3   A-RA-f4   A-RA-f5   A-RA-f6   A-RA-f7   A-RA-f8   A-RA-f9   A-RA-f10  A-RA-f11  A-RA-f12  A-RA-prnt A-RA-pause A-RA-del
+  A-RA-grv  A-RA-1    A-RA-2    A-RA-3    A-RA-4    A-RA-5    A-RA-6    A-RA-7    A-RA-8    A-RA-9    A-RA-0    A-RA--    A-RA-=    A-RA-bspc       A-RA-home
+  A-RA-tab  A-RA-q    A-RA-w    A-RA-e    A-RA-r    A-RA-t    A-RA-y    A-RA-u    A-RA-i    S-home    C-home    S-end   A-RA-]    A-RA-\          A-RA-end
+  A-RA-caps A-RA-a    A-RA-s    A-RA-d    A-RA-f    A-RA-g    A-RA-h    A-RA-j    A-RA-k    home      C-end    end         A-RA-ret        A-RA-pgup
+  A-RA-lsft A-RA-z    A-RA-x    A-RA-c    A-RA-v    A-RA-b    A-RA-n    A-RA-m    A-RA-,    A-RA-.    A-RA-/    A-RA-rsft           A-RA-up    A-RA-pgdn
+  A-RA-lctl A-RA-lmet A-RA-lalt           A-RA-spc                A-RA-ralt  A-RA-fn   A-RA-rctl      A-RA-left A-RA-down  A-RA-rght
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;ralt;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defalias
+  raltcmd_toggle (layer-toggle raltlcmd)
+  raltmet_toggle (layer-toggle raltlmet)
+)
+
+;; change the following command to
+;; ralt + pl;' -> arrow(up, left, down, rght)
+(deflayer rralt
+  RA-esc  RA-f1   RA-f2   RA-f3   RA-f4   RA-f5   RA-f6   RA-f7   RA-f8   RA-f9   RA-f10  RA-f11  RA-f12  RA-prnt RA-pause RA-del
+  RA-grv  RA-1    RA-2    RA-3    RA-4    RA-5    RA-6    RA-7    RA-8    RA-9    RA-0    RA--    RA-=    RA-bspc       RA-home
+  RA-tab  RA-q    RA-w    RA-e    RA-r    RA-t    RA-y    RA-u    RA-i    RA-o    up    RA-[    RA-]    RA-\          RA-end
+  RA-caps RA-a    RA-s    RA-d    RA-f    RA-g    RA-h    RA-j    RA-k    left    down    rght         RA-ret        RA-pgup
+  RA-lsft RA-z    RA-x    RA-c    RA-v    RA-b    RA-n    RA-m    RA-,    RA-.    RA-/    RA-rsft           RA-up    RA-pgdn
+  RA-lctl @raltmet_toggle @raltcmd_toggle           RA-spc                RA-ralt  RA-fn   RA-rctl      RA-left RA-down  RA-rght
+)
+
+;; alt + met(super)
+(deflayer raltlmet
+  RA-M-esc  RA-M-f1   RA-M-f2   RA-M-f3   RA-M-f4   RA-M-f5   RA-M-f6   RA-M-f7   RA-M-f8   RA-M-f9   RA-M-f10  RA-M-f11  RA-M-f12  RA-M-prnt RA-M-pause RA-M-del
+  RA-M-grv  RA-M-1    RA-M-2    RA-M-3    RA-M-4    RA-M-5    RA-M-6    RA-M-7    RA-M-8    RA-M-9    RA-M-0    RA-M--    RA-M-=    RA-M-bspc       RA-M-home
+  RA-M-tab  RA-M-q    RA-M-w    RA-M-e    RA-M-r    RA-M-t    RA-M-y    RA-M-u    RA-M-i    RA-M-o    C-up    RA-M-[    RA-M-]    RA-M-\          RA-M-end
+  RA-M-caps RA-M-a    RA-M-s    RA-M-d    RA-M-f    RA-M-g    RA-M-h    RA-M-j    RA-M-k    C-left    C-down    C-rght         RA-M-ret        RA-M-pgup
+  RA-M-lsft RA-M-z    RA-M-x    RA-M-c    RA-M-v    RA-M-b    RA-M-n    RA-M-m    RA-M-,    RA-M-.    RA-M-/    RA-M-rsft           RA-M-up    RA-M-pgdn
+  RA-M-lctl RA-M-lmet RA-M-lalt           RA-M-spc                RA-M-ralt  RA-M-fn   RA-M-rctl      RA-M-left RA-M-down  RA-M-rght
+)
+
+
+;; press the ralt first and then the lalt(cmd)
+(deflayer raltlcmd
+  RA-A-esc  RA-A-f1   RA-A-f2   RA-A-f3   RA-A-f4   RA-A-f5   RA-A-f6   RA-A-f7   RA-A-f8   RA-A-f9   RA-A-f10  RA-A-f11  RA-A-f12  RA-A-prnt RA-A-pause RA-A-del
+  RA-A-grv  RA-A-1    RA-A-2    RA-A-3    RA-A-4    RA-A-5    RA-A-6    RA-A-7    RA-A-8    RA-A-9    RA-A-0    RA-A--    RA-A-=    RA-A-bspc       RA-A-home
+  RA-A-tab  RA-A-q    RA-A-w    RA-A-e    RA-A-r    RA-A-t    RA-A-y    RA-A-u    RA-A-i    S-home    C-home    S-end    RA-A-]    RA-A-\          RA-A-end
+  RA-A-caps RA-A-a    RA-A-s    RA-A-d    RA-A-f    RA-A-g    RA-A-h    RA-A-j    RA-A-k    home    C-end    end         RA-A-ret        RA-A-pgup
+  RA-A-lsft RA-A-z    RA-A-x    RA-A-c    RA-A-v    RA-A-b    RA-A-n    RA-A-m    RA-A-,    RA-A-.    RA-A-/    RA-A-rsft           RA-A-up    RA-A-pgdn
+  RA-A-lctl RA-A-lmet _           RA-A-spc                RA-A-ralt  RA-A-fn   RA-A-rctl      RA-A-left RA-A-down  RA-A-rght
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;met(super);;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; change the met(super) + x to open the app
+
+(defalias
+  met_toggle (layer-toggle mmet)
+  metralt_toggle (layer-toggle metralt)
+)
+
+(deflayer mmet
+  M-esc  M-f1   M-f2   M-f3   M-f4   M-f5   M-f6   M-f7   M-f8   M-f9   M-f10  M-f11  M-f12  M-prnt M-pause M-del
+  M-grv  M-1    @chrome    M-3    M-4    M-5    M-6    M-7    M-8    M-9    M-0    M--    M-=    C-bspc       M-home
+  M-tab  M-q    M-w    M-e    M-r    M-t    M-y    M-u    M-i    M-o    M-p    M-[    M-]    M-\          M-end
+  M-caps M-a    M-s    M-d    M-f    M-g    M-h    M-j    M-k    M-l    M-;    M-'         M-ret        M-pgup
+  M-lsft M-z    M-x    @code    M-v    M-b    M-n    M-m    M-,    M-.    M-/    M-rsft           M-up    M-pgdn
+  M-lctl M-lmet M-lalt           M-spc                @metralt_toggle  M-fn   M-rctl      M-left M-down  M-rght
+)
+
+(deflayer metralt
+  M-RA-esc  M-RA-f1   M-RA-f2   M-RA-f3   M-RA-f4   M-RA-f5   M-RA-f6   M-RA-f7   M-RA-f8   M-RA-f9   M-RA-f10  M-RA-f11  M-RA-f12  M-RA-prnt M-RA-pause M-RA-del
+  M-RA-grv  M-RA-1    M-RA-2    M-RA-3    M-RA-4    M-RA-5    M-RA-6    M-RA-7    M-RA-8    M-RA-9    M-RA-0    M-RA--    M-RA-=    M-RA-bspc       M-RA-home
+  M-RA-tab  M-RA-q    M-RA-w    M-RA-e    M-RA-r    M-RA-t    M-RA-y    M-RA-u    M-RA-i    M-RA-o    C-up    M-RA-[    M-RA-]    M-RA-\          M-RA-end
+  M-RA-caps M-RA-a    M-RA-s    M-RA-d    M-RA-f    M-RA-g    M-RA-h    M-RA-j    M-RA-k    C-left C-down  C-rght         M-RA-ret        M-RA-pgup
+  M-RA-lsft M-RA-z    M-RA-x    M-RA-c    M-RA-v    M-RA-b    M-RA-n    M-RA-m    M-RA-,    M-RA-.    M-RA-/    M-RA-rsft           M-RA-up    M-RA-pgdn
+  M-RA-lctl M-RA-lmet M-RA-lalt           M-RA-spc                M-RA-ralt  M-RA-fn   M-RA-rctl      M-RA-left M-RA-down  M-RA-rght
+)
+
+;; nothing changed
+
+(deflayer metctl
+  M-C-esc  M-C-f1   M-C-f2   M-C-f3   M-C-f4   M-C-f5   M-C-f6   M-C-f7   M-C-f8   M-C-f9   M-C-f10  M-C-f11  M-C-f12  M-C-prnt M-C-pause M-C-del
+  M-C-grv  M-C-1    M-C-2    M-C-3    M-C-4    M-C-5    M-C-6    M-C-7    M-C-8    M-C-9    M-C-0    M-C--    M-C-=    M-C-bspc       M-C-home
+  M-C-tab  M-C-q    M-C-w    M-C-e    M-C-r    M-C-t    M-C-y    M-C-u    M-C-i    M-C-o    M-C-p    M-C-[    M-C-]    M-C-\          M-C-end
+  M-C-caps M-C-a    M-C-s    M-C-d    M-C-f    M-C-g    M-C-h    M-C-j    M-C-k    M-C-l    M-C-;    M-C-'         M-C-ret        M-C-pgup
+  M-C-lsft M-C-z    M-C-x    M-C-c    M-C-v    M-C-b    M-C-n    M-C-m    M-C-,    M-C-.    M-C-/    M-C-rsft           M-C-up    M-C-pgdn
+  M-C-lctl M-C-lmet M-C-lalt           M-C-spc                M-C-ralt  M-C-fn   M-C-rctl      M-C-left M-C-down  M-C-rght
+)
+
+(deflayer none
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _    _    _    
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _    _    
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _    _    
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _    
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _    
+  _    _    _    _    _    _    _    _    _    _    
+)
